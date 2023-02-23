@@ -1,73 +1,85 @@
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
-// -------------------------------------------------------------------------
-/**
- * Represents a Rook game piece.
- *
- * @author Ben Katz (bakatz)
- * @author Myles David II (davidmm2)
- * @author Danielle Bushrow (dbushrow)
- * @version 2010.11.17
- */
-public class Rook
-    extends ChessGamePiece{
-    // private ArrayList<String> possibleMoves;
-    // ----------------------------------------------------------
-    /**
-     * Create a new Rook object.
-     *
-     * @param board
-     *            the board to create the rook on
-     * @param row
-     *            the row to create the rook on
-     * @param col
-     *            the column to create the rook on
-     * @param color
-     *            either GamePiece.WHITE, BLACK, or UNASSIGNED
-     */
-    public Rook( ChessGameBoard board, int row, int col, int color ){
-        super( board, row, col, color );
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class ChessGamePiece {
+    protected int pieceRow;
+    protected int pieceColumn;
+    protected int colorOfPiece;
+    protected boolean isPieceOnScreen;
+    protected boolean isKing;
+    protected ArrayList<String> possibleMoves;
+    protected ChessGameBoard gameBoard;
+    private static final Map<String, ChessGamePiece> pieces = new HashMap<>();
+
+    protected ChessGamePiece(ChessGameBoard board, int row, int col, int color, boolean isKing) {
+        this.gameBoard = board;
+        this.pieceRow = row;
+        this.pieceColumn = col;
+        this.colorOfPiece = color;
+        this.isPieceOnScreen = true;
+        this.isKing = isKing;
+        this.possibleMoves = new ArrayList<String>();
     }
-    /**
-     * Calculates the possible moves for this Rook.
-     * @param board the board to check on
-     * @return ArrayList<String> the list of moves
-     */
-    @Override
-    protected ArrayList<String> calculatePossibleMoves( ChessGameBoard board ){
-        ArrayList<String> northMoves = calculateNorthMoves( board, 8 );
-        ArrayList<String> southMoves = calculateSouthMoves( board, 8 );
-        ArrayList<String> westMoves = calculateWestMoves( board, 8 );
-        ArrayList<String> eastMoves = calculateEastMoves( board, 8 );
-        ArrayList<String> allMoves = new ArrayList<String>();
-        allMoves.addAll( northMoves );
-        allMoves.addAll( southMoves );
-        allMoves.addAll( westMoves );
-        allMoves.addAll( eastMoves );
-        return allMoves;
+
+    protected ChessGamePiece(ChessGameBoard board, int row, int col, int color) {
+        this(board, row, col, color, false);
     }
-    /**
-     * Creates an icon for this piece depending on the piece's color.
-     *
-     * @return ImageIcon the ImageIcon representation of this piece.
-     */
-    @Override
-    public ImageIcon createImageByPieceType(){
-        if ( getColorOfPiece() == ChessGamePiece.WHITE ){
-            return new ImageIcon(
-                getClass().getResource("chessImages/WhiteRook.gif")
-            );            
+
+    public static ChessGamePiece getInstance(String type, ChessGameBoard board, int row, int col, int color) {
+        String key = type + color;
+        if (!pieces.containsKey(key)) {
+            switch (type) {
+                case "pawn":
+                    pieces.put(key, new Pawn(board, row, col, color));
+                    break;
+                case "rook":
+                    pieces.put(key, new Rook(board, row, col, color));
+                    break;
+                case "knight":
+                    pieces.put(key, new Knight(board, row, col, color));
+                    break;
+                case "bishop":
+                    pieces.put(key, new Bishop(board, row, col, color));
+                    break;
+                case "queen":
+                    pieces.put(key, new Queen(board, row, col, color));
+                    break;
+                case "king":
+                    pieces.put(key, new King(board, row, col, color));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid piece type");
+            }
         }
-        else if ( getColorOfPiece() == ChessGamePiece.BLACK ){
-            return new ImageIcon(
-                getClass().getResource("chessImages/BlackRook.gif")
-            );            
-        }
-        else
-        {
-            return new ImageIcon(
-                getClass().getResource("chessImages/default-Unassigned.gif")
-            );        
-        }
+        return pieces.get(key);
     }
-}
+
+    public int getRow() {
+        return pieceRow;
+    }
+
+    public int getColumn() {
+        return pieceColumn;
+    }
+
+    public int getColorOfPiece() {
+        return colorOfPiece;
+    }
+
+    public boolean isPieceOnScreen() {
+        return isPieceOnScreen;
+    }
+
+    public boolean isKing() {
+        return isKing;
+    }
+
+    public ArrayList<String> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    public void setPossibleMoves(ArrayList<String> possibleMoves) {
+        this.possibleMoves = possibleMoves;
+    }}
