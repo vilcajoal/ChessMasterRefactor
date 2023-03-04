@@ -1,8 +1,1 @@
-/BishopAdapter.class
-/King$BlackKingPieceImage.class
-/King$ChessPieceImage.class
-/King$DefaultPieceImage.class
-/King$MoveCalculator.class
-/King$WhiteKingPieceImage.class
-/Piece.class
-/PieceAdapter.class
+/ChessPieceAdapter.class

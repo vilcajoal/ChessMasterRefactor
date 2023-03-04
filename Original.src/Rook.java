@@ -1,73 +1,57 @@
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
-// -------------------------------------------------------------------------
-/**
- * Represents a Rook game piece.
- *
- * @author Ben Katz (bakatz)
- * @author Myles David II (davidmm2)
- * @author Danielle Bushrow (dbushrow)
- * @version 2010.11.17
- */
-public class Rook
-    extends ChessGamePiece{
-    // private ArrayList<String> possibleMoves;
-    // ----------------------------------------------------------
-    /**
-     * Create a new Rook object.
-     *
-     * @param board
-     *            the board to create the rook on
-     * @param row
-     *            the row to create the rook on
-     * @param col
-     *            the column to create the rook on
-     * @param color
-     *            either GamePiece.WHITE, BLACK, or UNASSIGNED
-     */
-    public Rook( ChessGameBoard board, int row, int col, int color ){
-        super( board, row, col, color );
+
+public class Rook extends ChessGamePiece {
+    
+    public Rook(ChessGameBoard board, int row, int col, int color) {
+        super(board, row, col, color);
     }
-    /**
-     * Calculates the possible moves for this Rook.
-     * @param board the board to check on
-     * @return ArrayList<String> the list of moves
-     */
-    @Override
-    protected ArrayList<String> calculatePossibleMoves( ChessGameBoard board ){
-        ArrayList<String> northMoves = calculateNorthMoves( board, 8 );
-        ArrayList<String> southMoves = calculateSouthMoves( board, 8 );
-        ArrayList<String> westMoves = calculateWestMoves( board, 8 );
-        ArrayList<String> eastMoves = calculateEastMoves( board, 8 );
+    
+    protected ArrayList<String> calculatePossibleMoves(ChessPieceAdapter adapter) {
+        ArrayList<String> northMoves = adapter.getMovesInDirection(getPieceRow(), getPieceColumn(), -1, 0, 8);
+        ArrayList<String> southMoves = adapter.getMovesInDirection(getPieceRow(), getPieceColumn(), 1, 0, 8);
+        ArrayList<String> westMoves = adapter.getMovesInDirection(getPieceRow(), getPieceColumn(), 0, -1, 8);
+        ArrayList<String> eastMoves = adapter.getMovesInDirection(getPieceRow(), getPieceColumn(), 0, 1, 8);
         ArrayList<String> allMoves = new ArrayList<String>();
-        allMoves.addAll( northMoves );
-        allMoves.addAll( southMoves );
-        allMoves.addAll( westMoves );
-        allMoves.addAll( eastMoves );
+        allMoves.addAll(northMoves);
+        allMoves.addAll(southMoves);
+        allMoves.addAll(westMoves);
+        allMoves.addAll(eastMoves);
         return allMoves;
     }
-    /**
-     * Creates an icon for this piece depending on the piece's color.
-     *
-     * @return ImageIcon the ImageIcon representation of this piece.
-     */
-    @Override
-    public ImageIcon createImageByPieceType(){
-        if ( getColorOfPiece() == ChessGamePiece.WHITE ){
-            return new ImageIcon(
-                getClass().getResource("chessImages/WhiteRook.gif")
-            );            
-        }
-        else if ( getColorOfPiece() == ChessGamePiece.BLACK ){
-            return new ImageIcon(
-                getClass().getResource("chessImages/BlackRook.gif")
-            );            
-        }
-        else
-        {
-            return new ImageIcon(
-                getClass().getResource("chessImages/default-Unassigned.gif")
-            );        
+
+    public ImageIcon createImageByPieceType() {
+        if (getColorOfPiece() == ChessGamePiece.WHITE) {
+            return new ImageIcon(getClass().getResource("chessImages/WhiteRook.gif"));
+        } else if (getColorOfPiece() == ChessGamePiece.BLACK) {
+            return new ImageIcon(getClass().getResource("chessImages/BlackRook.gif"));
+        } else {
+            return new ImageIcon(getClass().getResource("chessImages/default-Unassigned.gif"));
         }
     }
 }
+public interface ChessPieceAdapter {
+    ArrayList<String> getMovesInDirection(int row, int col, int rowIncrement, int colIncrement, int maxSteps);
+}
+public class ChessGameBoard implements ChessPieceAdapter {
+    
+    // ... (otros métodos y propiedades)
+    
+    @Override
+    public ArrayList<String> getMovesInDirection(int row, int col, int rowIncrement, int colIncrement, int maxSteps) {
+        ArrayList<String> moves = new ArrayList<String>();
+        int currRow = row + rowIncrement;
+        int currCol = col + colIncrement;
+        int count = 0;
+        while (currRow >= 0 && currRow < NUM_ROWS && currCol >= 0 && currCol < NUM_COLS && count < maxSteps) {
+            ChessGamePiece piece = getCell(currRow, currCol).getPieceOnSquare();
+            if (piece == null) {
+                moves.add(currRow + "," + currCol);
+            } else if (piece.getColorOfPiece() != getCell(row, col).getPieceOnSquare().getColorOfPiece()) {
+                moves.add(currRow + "," + currCol);
+                break;
+            } else {
+                break;
+            }}}}
+  
+
