@@ -33,22 +33,13 @@ public class Bishop extends ChessGamePiece implements Cloneable {
     }
 
     @Override
-    public Object clone() {
-        ChessGamePiece clonedPiece = super.clone();
-        Bishop clonedBishop = new Bishop(clonedPiece.getBoard(), clonedPiece.getRow(), clonedPiece.getCol(),
+    public Object clone() throws CloneNotSupportedException {
+        ChessGamePiece clonedPiece = (ChessGamePiece) super.clone();
+        Bishop clonedBishop = new Bishop(clonedPiece.getBoard(), clonedPiece.getRow(), clonedPiece.getColumn(),
                 clonedPiece.getColorOfPiece());
         return clonedBishop;
     }
 }
 
-public class BishopPrototype {
 
-    private static Bishop bishopPrototype = new Bishop(null, 0, 0, ChessGamePiece.WHITE);
-
-    public static Bishop getPrototype(int color) {
-        Bishop clonedBishop = (Bishop) bishopPrototype.clone();
-        clonedBishop.setColorOfPiece(color);
-        return clonedBishop;
-    }
-}
 
