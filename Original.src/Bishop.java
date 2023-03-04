@@ -1,15 +1,12 @@
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+
 // -------------------------------------------------------------------------
 /**
  * Class to represent the Bishop piece.
  * 
- * @author Ben Katz (bakatz)
- * @author Myles David II (davidmm2)
- * @author Danielle Bushrow (dbushrow)
- * @version 2010.11.17
  */
-public class Bishop extends ChessGamePiece{
+public class BishopAdapter extends ChessPieceAdapter{
     /**
      * Creates a new Bishop object.
      * 
@@ -22,9 +19,10 @@ public class Bishop extends ChessGamePiece{
      * @param color
      *            either GamePiece.WHITE, BLACK, or UNASSIGNED
      */
-    public Bishop( ChessGameBoard board, int row, int col, int color ){
+    public BishopAdapter( ChessBoard board, int row, int col, int color ){
         super( board, row, col, color );
     }
+    
     /**
      * Calculates the possible moves for this piece. These are ALL the possible
      * moves, including illegal (but at the same time valid) moves.
@@ -34,7 +32,7 @@ public class Bishop extends ChessGamePiece{
      * @return ArrayList<String> the moves
      */
     @Override
-    protected ArrayList<String> calculatePossibleMoves( ChessGameBoard board ){
+    protected ArrayList<String> calculatePossibleMoves( ChessBoard board ){
         ArrayList<String> northEastMoves = calculateNorthEastMoves( board, 8 );
         ArrayList<String> northWestMoves = calculateNorthWestMoves( board, 8 );
         ArrayList<String> southEastMoves = calculateSouthEastMoves( board, 8 );
@@ -46,6 +44,7 @@ public class Bishop extends ChessGamePiece{
         allMoves.addAll( southWestMoves );
         return allMoves;
     }
+    
     /**
      * Creates an icon for this piece depending on the piece's color.
      * 
@@ -53,20 +52,13 @@ public class Bishop extends ChessGamePiece{
      */
     @Override
     public ImageIcon createImageByPieceType(){
-        if ( getColorOfPiece() == ChessGamePiece.WHITE ){
-            return new ImageIcon(
-                getClass().getResource("chessImages/WhiteBishop.gif")
-            );            
-        }
-        else if ( getColorOfPiece() == ChessGamePiece.BLACK ){
-            return new ImageIcon(
-                getClass().getResource("chessImages/BlackBishop.gif")
-            );
+        String filename = "";
+        if ( getColorOfPiece() == ChessPiece.WHITE ){
+            filename = "WhiteBishop.gif";          
         }
         else{
-            return new ImageIcon(
-                getClass().getResource("chessImages/BlackBishop.gif")
-            );
+            filename = "BlackBishop.gif";
         }
+        return new ImageIcon( getClass().getResource("chessImages/" + filename ) );
     }
 }
