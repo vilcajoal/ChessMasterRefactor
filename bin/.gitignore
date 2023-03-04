@@ -4,3 +4,5 @@
 /King$DefaultPieceImage.class
 /King$MoveCalculator.class
 /King$WhiteKingPieceImage.class
+/Piece.class
+/PieceAdapter.class
